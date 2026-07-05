@@ -2,7 +2,7 @@
 
 A modern, feature-rich task management web application built with **vanilla HTML, CSS, and JavaScript** — no frameworks, just clean fundamentals.
 
-🔗 **Live Demo:** [Add your deployed link here]
+🔗 **Live Demo:** [https://laiba-012.github.io/smart-todo-app/]
 💻 **Repo:** [ https://github.com/laiba-012/smart-todo-app]
 
 ![To-Do App Screenshot](./screenshot-light.png.png)
