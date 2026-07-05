@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My To-Do App</title>
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- jsPDF (for Export to PDF) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <!--==============================
+            BACKGROUND
+    ==============================-->
+
+    <div class="background">
+
+        <div class="blob blob1"></div>
+
+        <div class="blob blob2"></div>
+
+        <div class="blob blob3"></div>
+
+    </div>
+
+    <!--==============================
+            THEME TOGGLE (fixed, always visible)
+    ==============================-->
+
+    <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle dark mode">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <!--==============================
+            MAIN CONTAINER
+    ==============================-->
+
+    <div class="container">
+
+        <!--==============================
+                HEADER
+        ==============================-->
+
+        <header class="header">
+
+            <div class="hero-illustration">
+                <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="40" cy="40" r="18" fill="#c7d6ff" opacity="0.6"/>
+                    <circle cx="365" cy="60" r="12" fill="#c4b5fd" opacity="0.5"/>
+                    <circle cx="30" cy="220" r="10" fill="#a5c8ff" opacity="0.5"/>
+                    <circle cx="375" cy="210" r="16" fill="#93b4ff" opacity="0.5"/>
+                    <rect x="120" y="40" width="160" height="200" rx="16" fill="#ffffff" stroke="#dbe4ff" stroke-width="2"/>
+                    <rect x="120" y="40" width="160" height="200" rx="16" fill="url(#clipGradient)" opacity="0.06"/>
+                    <rect x="170" y="26" width="60" height="26" rx="8" fill="#2563eb"/>
+                    <rect x="182" y="18" width="36" height="18" rx="6" fill="#1d4ed8"/>
+                    <rect x="140" y="80" width="22" height="22" rx="6" fill="#16a34a"/>
+                    <path d="M146 91 L152 97 L164 83" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="172" y="86" width="88" height="8" rx="4" fill="#cbd5e1"/>
+                    <rect x="140" y="120" width="22" height="22" rx="6" fill="#16a34a"/>
+                    <path d="M146 131 L152 137 L164 123" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="172" y="126" width="70" height="8" rx="4" fill="#cbd5e1"/>
+                    <rect x="140" y="160" width="22" height="22" rx="6" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+                    <rect x="172" y="166" width="80" height="8" rx="4" fill="#e2e8f0"/>
+                    <rect x="140" y="200" width="22" height="22" rx="6" fill="none" stroke="#94a3b8" stroke-width="2.5"/>
+                    <rect x="172" y="206" width="55" height="8" rx="4" fill="#e2e8f0"/>
+                    <g transform="translate(300,150) rotate(35)">
+                        <rect x="0" y="0" width="14" height="70" rx="4" fill="#f59e0b"/>
+                        <polygon points="0,70 14,70 7,90" fill="#d97706"/>
+                        <rect x="0" y="0" width="14" height="12" rx="3" fill="#fbbf24"/>
+                    </g>
+                    <path d="M60 130 L64 140 L74 140 L66 147 L69 157 L60 151 L51 157 L54 147 L46 140 L56 140 Z" fill="#fbbf24" opacity="0.9"/>
+                    <defs>
+                        <linearGradient id="clipGradient" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#2563eb"/>
+                            <stop offset="100%" stop-color="#4f46e5"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+
+            <div class="header-text">
+                <h1>
+                    <i class="fa-solid fa-list-check"></i>
+                    My To-Do List
+                </h1>
+                <p>
+                    Organize your day. Finish more tasks.
+                </p>
+            </div>
+
+        </header>
+
+        <!--==============================
+                PROGRESS BAR
+        ==============================-->
+
+        <section class="progress-section">
+            <div class="progress-info">
+                <span id="progressLabel">0% completed</span>
+            </div>
+            <div class="progress-bar-outer">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+        </section>
+
+        <!--==============================
+                STATS
+        ==============================-->
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <i class="fa-solid fa-list-check"></i>
+                <h2 id="totalTasks">0</h2>
+                <span>Total Tasks</span>
+            </div>
+
+            <div class="stat-card">
+                <i class="fa-solid fa-circle-check"></i>
+                <h2 id="completedTasks">0</h2>
+                <span>Completed</span>
+            </div>
+
+            <div class="stat-card">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <h2 id="pendingTasks">0</h2>
+                <span>Pending</span>
+            </div>
+
+        </section>
+
+        <!--==============================
+                ADD TASK SECTION
+        ==============================-->
+
+        <section class="add-task">
+
+            <input
+                id="taskInput"
+                type="text"
+                placeholder="Enter your task..."
+            >
+
+            <div class="select-wrapper">
+                <select id="priority">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+
+            <div class="select-wrapper">
+                <select id="categoryInput">
+                    <option value="Work">Work</option>
+                    <option value="Study">Study</option>
+                    <option value="Personal">Personal</option>
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+
+            <input
+                id="dateInput"
+                type="date"
+            >
+
+            <button id="addTaskBtn">
+                <i class="fa-solid fa-plus"></i>
+                Add Task
+            </button>
+
+        </section>
+
+        <!--==============================
+                SEARCH BAR
+        ==============================-->
+
+        <section class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search your tasks..."
+            >
+        </section>
+
+        <!--==============================
+                FILTER BUTTONS
+        ==============================-->
+
+        <section class="filter">
+
+            <button class="active" id="allBtn">All</button>
+            <button id="pendingBtn">Pending</button>
+            <button id="completedBtn">Completed</button>
+
+            <div class="select-wrapper filter-select-wrapper">
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="Work">Work</option>
+                    <option value="Study">Study</option>
+                    <option value="Personal">Personal</option>
+                </select>
+                <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+
+            <button id="clearCompletedBtn" class="clear-completed-btn">
+                <i class="fa-solid fa-broom"></i>
+                Clear Completed
+            </button>
+
+        </section>
+
+        <!--==============================
+                EXPORT ACTIONS
+        ==============================-->
+
+        <section class="export-actions">
+            <button id="exportCsvBtn" class="export-btn">
+                <i class="fa-solid fa-file-csv"></i>
+                Export CSV
+            </button>
+            <button id="exportPdfBtn" class="export-btn">
+                <i class="fa-solid fa-file-pdf"></i>
+                Export PDF
+            </button>
+        </section>
+
+        <!--==============================
+                TASK LIST
+                (filled dynamically by script.js)
+        ==============================-->
+
+        <section
+            class="task-list"
+            id="taskList">
+        </section>
+
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
